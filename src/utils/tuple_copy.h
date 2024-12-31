@@ -1,5 +1,5 @@
-#ifndef RC_PRIMITIVES_TUPLE
-#define RC_PRIMITIVES_TUPLE
+#ifndef RC_UTILS_TUPLE
+#define RC_UTILS_TUPLE
 
 #include <cmath>
 
@@ -22,16 +22,22 @@ class Tuple
     float getW() const { return w_; }
 
     Tuple operator-() const;
-    friend Tuple operator+(const Tuple& lhs, const Tuple& rhs);
-    friend Tuple operator-(const Tuple& lhs, const Tuple& rhs);
+    friend Tuple operator+(const Tuple& rhs);
+    friend Tuple operator-(const Tuple& rhs);
+    friend Tuple operator*(float scalar);
+    friend Tuple operator/(float scalar);
 
     bool isPoint() const { return w_ == 1.0f; }
     bool isVector() const { return w_ == 0.0f; }
     bool isEqual(const Tuple& rhs, double epsilon) const;
+    float magnitude() const;
+    Tuple normalize() const;
+    float dot(const Tuple& rhs) const;
+    Tuple cross(const Tuple& rhs) const;
 
     // deconstructor
     ~Tuple() = default;
 
 };
 
-#endif // RC_PRIMITIVES_TUPLE
+#endif // RC_UTILS_TUPLE

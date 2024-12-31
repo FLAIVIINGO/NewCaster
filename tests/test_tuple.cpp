@@ -1,52 +1,115 @@
 #include "tuple.h"
+#include "point.h"
+#include "vector.h"
 #include <gtest/gtest.h>
+
+TEST(TupleTest, PointConstructor)
+{
+  Tuple a(4.3f, -4.2f, 3.1f, 1.0f);
+
+  EXPECT_TRUE(a.isPoint());
+  EXPECT_FALSE(a.isVector());
+  EXPECT_EQ(a.getX(), 4.3f);
+  EXPECT_EQ(a.getY(), -4.2f);
+  EXPECT_EQ(a.getZ(), 3.1f);
+  EXPECT_EQ(a.getW(), 1.0f);
+}
+
+TEST(TupleTest, VectorConstructor)
+{
+  Tuple a(4.3f, -4.2f, 3.1f, 0.0f);
+
+  EXPECT_TRUE(a.isVector());
+  EXPECT_FALSE(a.isPoint());
+  EXPECT_EQ(a.getX(), 4.3f);
+  EXPECT_EQ(a.getY(), -4.2f);
+  EXPECT_EQ(a.getZ(), 3.1f);
+  EXPECT_EQ(a.getW(), 0.0f);
+}
 
 TEST(TupleTest, Constructor)
 {
-  Tuple t1(4.3f, -4.2f, 3.1f, 1.0f);
-  EXPECT_FLOAT_EQ(t1.getX(), 4.3f);
-  EXPECT_FLOAT_EQ(t1.getY(), -4.2f);
-  EXPECT_FLOAT_EQ(t1.getZ(), 3.1f);
-  EXPECT_FLOAT_EQ(t1.getW(), 1.0f);
+  Point p(4.0f, -4.0f, 3.0f);
+  Vector v(4.0f, -4.0f, 3.0f);  
 
-  EXPECT_TRUE(t1.isPoint());
+  EXPECT_TRUE(p.isPoint());
+  EXPECT_FALSE(p.isVector());
+  EXPECT_EQ(p.getX(), 4.0f);
+  EXPECT_EQ(p.getY(), -4.0f);
+  EXPECT_EQ(p.getZ(), 3.0f);
+  EXPECT_EQ(p.getW(), 1.0f);
 
-  Tuple t2(4.3f, -4.2f, 3.1f, 0.0f);
-  EXPECT_FLOAT_EQ(t2.getX(), 4.3f);
-  EXPECT_FLOAT_EQ(t2.getY(), -4.2f);
-  EXPECT_FLOAT_EQ(t2.getZ(), 3.1f);
-  EXPECT_FLOAT_EQ(t2.getW(), 0.0f);
-
-  EXPECT_TRUE(t2.isVector());
+  EXPECT_TRUE(v.isVector());
+  EXPECT_FALSE(v.isPoint());
+  EXPECT_EQ(v.getX(), 4.0f);
+  EXPECT_EQ(v.getY(), -4.0f);
+  EXPECT_EQ(v.getZ(), 3.0f);
+  EXPECT_EQ(v.getW(), 0.0f);
 }
 
-TEST(TupleTest, FactoryMethods)
+TEST(TupleTest, TupleAddition)
 {
-  Tuple point = Tuple::Point(4.0f, -4.0f, 3.0f);
-  Tuple vector = Tuple::Vector(4.0f, -4.0f, 3.0f);
+  Tuple a1(3.0f, -2.0f, 5.0f, 1.0f);
+  Tuple a2(-2.0f, 3.0f, 1.0f, 0.0f);
+  Tuple a3 = a1 + a2;
 
-  EXPECT_TRUE(point.isPoint());
-  EXPECT_FALSE(point.isVector());
-
-  EXPECT_FALSE(vector.isPoint());
-  EXPECT_TRUE(vector.isVector());
+  EXPECT_EQ(a3.getX(), 1.0f);
+  EXPECT_EQ(a3.getY(), 1.0f);
+  EXPECT_EQ(a3.getZ(), 6.0f);
+  EXPECT_EQ(a3.getW(), 1.0f);
 }
 
-TEST(TupleTest, EqualityFunction)
+TEST(TupleTest, PointSubtraction)
 {
-  Tuple point1 = Tuple::Point(4.0f, -4.0f, 3.0f);
-  Tuple point2 = Tuple::Point(4.0f, -4.0f, 3.0f);
-
-  EXPECT_TRUE(point1.isEqual(point2, 1e-5));
+  Point p1(3.0f, 2.0f, 1.0f);
+  Point p2(5.0f, 6.0f, 7.0f);
+  
+  EXPECT_TRUE((p1 - p2).equals(Vector(-2.0f, -4.0f, -6.0f)));
 }
 
-TEST(TupleTest, AdditionOperator)
+TEST(TupleTest, PointVectorSubtraction)
 {
-  Tuple a1 = Tuple::Point(3.0f, -2.0f, 5.0f);
-  Tuple a2 = Tuple::Vector(-2.0f, 3.0f, 1.0f);
-  Tuple result = a1 + a2;
+  Point p(3.0f, 2.0f, 1.0f);
+  Vector v(5.0f, 6.0f, 7.0f);
 
-  Tuple answer = Tuple::Point(1.0f, 1.0f, 6.0f);
+  EXPECT_TRUE((p - v).equals(Point(-2.0f, -4.0f, -6.0f)));
+}
 
-  EXPECT_TRUE(result.isEqual(answer, 1e-5));
+TEST(TupleTest, VectorSubtraction)
+{
+  Vector v1(3.0f, 2.0f, 1.0f);
+  Vector v2(5.0f, 6.0f, 7.0f);
+
+  EXPECT_TRUE((v1 - v2).equals(Vector(-2.0f, -4.0f, -6.0f)));
+}
+
+TEST(TupleTest, NegateTuple)
+{
+  Tuple a(1.0f, -2.0f, 3.0f, -4.0f);
+
+  Tuple b = -a;
+
+  EXPECT_TRUE(b.equals(Tuple(-1.0f, 2.0f, -3.0f, 4.0f)));
+}
+
+TEST(TupleTest, ScalarMultiplication)
+{
+  Tuple a(1.0f, -2.0f, 3.0f, -4.0f);
+  Tuple b = a * 3.5;
+
+  EXPECT_TRUE(b.equals(Tuple(3.5f, -7.0f, 10.5f, -14.0f)));
+}
+
+TEST(TupleTest, ScalarDivision)
+{
+  Tuple a(1.0f, -2.0f, 3.0f, -4.0f);
+  Tuple b = a / 2.0f;
+  
+  EXPECT_TRUE(b.equals(Tuple(0.5f, -1.0f, 1.5f, -2.0f)));
+}
+
+TEST(TupleTest, Magnitude)
+{
+  Vector v1(0.0f, 1.0f, 0.0f);
+  ASSERT_EQ(v1.magnitude(), 1.0f);
 }
