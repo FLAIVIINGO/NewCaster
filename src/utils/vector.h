@@ -9,7 +9,12 @@ class Vector : public Tuple
     Vector();
     Vector(float x, float y, float z);
 
+    Vector normalize() const;
+    float dot(const Vector& rhs) const;
+    Vector cross(const Vector& rhs) const;
+
     Vector operator-(const Vector& rhs) const;
+    Vector operator+(const Vector& rhs) const;
 };
 
 #endif // VECTOR_H

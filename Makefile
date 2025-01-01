@@ -5,10 +5,10 @@ SRC_DIR = src/utils
 TEST_DIR = tests
 BUILD_DIR = build
 
-SRC_FILES = $(SRC_DIR)/tuple.cpp $(SRC_DIR)/point.cpp $(SRC_DIR)/vector.cpp
-TEST_FILES = $(TEST_DIR)/test_tuple.cpp
+SRC_FILES = $(SRC_DIR)/tuple.cpp $(SRC_DIR)/point.cpp $(SRC_DIR)/vector.cpp $(SRC_DIR)/color.cpp
+TEST_FILES = $(TEST_DIR)/test_tuple.cpp $(TEST_DIR)/test_color.cpp
 
-UTILS_TEST = $(BUILD_DIR)/utils_test
+UTILS_TEST = $(BUILD_DIR)/test
 
 GTEST_LIB = -lgtest -lgtest_main -pthread
 

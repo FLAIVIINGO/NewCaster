@@ -112,4 +112,30 @@ TEST(TupleTest, Magnitude)
 {
   Vector v1(0.0f, 1.0f, 0.0f);
   ASSERT_EQ(v1.magnitude(), 1.0f);
+  Vector v2(0.0f, 0.0f, 1.0f);
+  ASSERT_EQ(v2.magnitude(), 1.0f);
+}
+
+TEST(TupleTest, Normalize)
+{
+  Vector v(4.0f, 0.0f, 0.0f);
+  Vector a = v.normalize();
+  EXPECT_TRUE(a.equals(Tuple(1.0f, 0.0f, 0.0f, 0.0f)));
+}
+
+TEST(TupleTest, DotProduct)
+{
+  Vector a(1.0f, 2.0f, 3.0f);
+  Vector b(2.0f, 3.0f, 4.0f);
+  ASSERT_EQ(a.dot(b), 20.0f);
+}
+
+TEST(TupleTest, CrossProduct)
+{
+  Vector a(1.0f, 2.0f, 3.0f);
+  Vector b(2.0f, 3.0f, 4.0f);
+  Vector c = a.cross(b);
+  Vector d = b.cross(a);
+  EXPECT_TRUE(c.equals(Tuple(-1.0f, 2.0f, -1.0f, 0.0f)));
+  EXPECT_TRUE(d.equals(Tuple(1.0f, -2.0f, 1.0f, 0.0f)));
 }
